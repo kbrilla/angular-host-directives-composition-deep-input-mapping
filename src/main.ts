@@ -1,26 +1,36 @@
-import { Component, Directive, Input } from '@angular/core';
+import { Component, Directive, HostBinding, Input } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import 'zone.js';
 
 @Directive({
-  selector: 'app-directive-level-1',
+  selector: '[level1]',
   standalone: true,
 })
 export class Level1Directive {
-  @Input() name = '';
+  @HostBinding('style.background') 
+  @Input({required: true}) background = '';
 }
 
 @Directive({
-  selector: 'app-directive-level-2',
+  selector: '[level2]',
   standalone: true,
-  hostDirectives: [{ directive: Level1Directive, inputs: ['name'] }],
+  hostDirectives: [{ directive: Level1Directive, inputs: ['background'] }],
 })
 export class Level2Directive {}
 
+//works
+// @Directive({
+//   selector: '[level3]',
+//   standalone: true,
+//   hostDirectives: [{ directive: Level2Directive }],
+// })
+// export class Level3Directive {}
+
+//does not work
 @Directive({
-  selector: 'app-directive-level-3',
+  selector: '[level3]',
   standalone: true,
-  hostDirectives: [{ directive: Level2Directive, inputs: ['name'] }],
+  hostDirectives: [{ directive: Level2Directive, inputs: ['background']}],
 })
 export class Level3Directive {}
 
@@ -28,12 +38,9 @@ export class Level3Directive {}
   selector: 'app-root',
   standalone: true,
   template: `
-    <h1 app-directive-level-3>Hello from {{ name }}!</h1>
-    <a target="_blank" href="https://angular.dev/overview">
-      Learn more about Angular
-    </a>
+    <h1 level3 backgroun="green">Hello from {{ name }}!</h1>
   `,
-  imports: [Level3Directive],
+  imports: [Level1Directive, Level2Directive, Level3Directive],
 })
 export class App {
   name = 'Angular';
