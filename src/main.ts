@@ -38,7 +38,7 @@ export class Level3Directive {}
   selector: 'app-root',
   standalone: true,
   template: `
-    <h1 level3 backgroun="green">Hello from {{ name }}!</h1>
+    <h1 level3 background="green">Hello from {{ name }}!</h1>
   `,
   imports: [Level1Directive, Level2Directive, Level3Directive],
 })
